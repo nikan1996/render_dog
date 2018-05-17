@@ -1,0 +1,5 @@
+[
+  "test_cli.py::test_index[pyloop]",
+  "test_cli.py::test_healthz[pyloop]",
+  "test_cli.py::test_raw_post_render[pyloop]"
+]
