@@ -36,18 +36,18 @@ async def test_healthz(test_client):
     assert 'Healthz Checked!' in text
     
     
-async def test_raw_post_render(test_client):
+async def test_render(test_client):
     client = await test_client(create_test_app)
-    resp = await client.post('/raw_post_render', json={
+    resp = await client.post('/render', json={
         'url': 'https://www.baidu.com/'
     })
     assert resp.status == 200
     text = await resp.text()
     assert 'https://www.baidu.com/' in text
     
-    resp = await client.post('/raw_post_render', json={
+    resp = await client.post('/render', json={
     
     })
     assert resp.status == 200
     text = await resp.text()
-    assert 'https://www.baidu.com/' in text
+    assert 'https://www.baidu.com/' not in text

@@ -13,6 +13,7 @@ from aiohttp import web
 import uvloop
 from aiohttp_swagger import setup_swagger
 from core.main import init_chromium, browser
+from server.views.render import raw_get_render, raw_post_render, RenderView
 
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
@@ -51,19 +52,7 @@ async def index(request):
     return web.Response(text='欢迎!')
 
 
-async def raw_get_render(request):
-    url = request.query.get("url")
-    print(url)
-    # page = await browser.newPage()
-    return web.Response(text='1')
 
-
-async def raw_post_render(request):
-    params = await request.json()
-    url = params.get('url')
-    if not url:
-    
-    return web.Response(text=url)
     
 
 async def get_liveness_nodes(request):
@@ -78,8 +67,7 @@ def setup_routes(app):
     app.router.add_get('/', index)
     app.router.add_get('/healthz', healthz)
 
-    app.router.add_get('/raw_get_render', raw_get_render)
-    app.router.add_post('/raw_post_render', raw_post_render)
+    app.router.add_view('/render', RenderView)
 
 
 def create_app(loop=None):

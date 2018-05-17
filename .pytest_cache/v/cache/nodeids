@@ -1,4 +1,0 @@
-[
-  "tests/test_cli.py::test_index[pyloop]",
-  "tests/test_cli.py::test_healthz[pyloop]"
-]
