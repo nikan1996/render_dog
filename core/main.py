@@ -14,8 +14,10 @@ import queue
 from pyppeteer import launch
 from pyppeteer.page import Page
 from pyppeteer.browser import Browser
-from pyppeteer.network_manager import Response
+from pyppeteer.network_manager import Response, NetworkManager
 import time
+
+from core.browser_interactive_fuction import disable_image
 from core.utils import stringify_dict
 import logging
 logger = logging.getLogger(__name__)
@@ -81,7 +83,8 @@ class ChromiumManager:
     #         future = ensure_future()
     async def setup(self):
         self.default_browser = await create_browser()
-        print(self.default_browser)
+        print(self.default_browser.wsEndpoint)
+        print("chromium version: ", await self.default_browser.version())
         # default page number: 20
         #
         # for i in range(20):
@@ -91,27 +94,26 @@ class ChromiumManager:
         browser = self.default_browser if not browser else browser
         page = await browser.newPage()  # type: Page
         page.setDefaultNavigationTimeout(30000*10)
-        page.setRequestInterception(True)  # 打开拦截请求开关
-        page.on('request', request= > {
-        if (request.resourceType() == = 'image')
-        request.abort();
-        else
-        request.
-        continue
-        ();
-        });
+        
+        # set useragent
+        # await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36')
+        
+        # want to disable image loading in page
+        #
+        # await page.setRequestInterception(True)  # 打开拦截请求开关
+        # page.on(NetworkManager.Events.Request, lambda request: disable_image(request))
         response = await page.goto(url)  # type: Response
         content = await page.content()
         title = await page.title()
         
-        headers = response.headers
-        status_code = response.status
-        await page.close()
+        headers = getattr(response, 'headers', '')
+        status_code = getattr(response, 'status', '')
+        # await page.close()
         return {
             'content': content,
             'title': title,
-            'status_code': headers,
-            'headers': status_code
+            'status_code': status_code,
+            'headers': headers
         }
     
     
