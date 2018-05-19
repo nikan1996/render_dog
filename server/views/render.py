@@ -10,6 +10,8 @@
 """
 from aiohttp import web
 
+from core.main import chromium_manager
+
 
 class RenderView(web.View):
     async def get(self):
@@ -17,6 +19,7 @@ class RenderView(web.View):
 
     async def post(self):
         return await raw_post_render(self.request)
+    
     
 async def raw_get_render(request):
     url = request.query.get("url")
@@ -26,8 +29,23 @@ async def raw_get_render(request):
 
 
 async def raw_post_render(request):
+    """
+        ---
+        description: home
+        tags:
+        - Index
+        produces:
+        - text/plain
+        responses:
+            "200":
+                description: 欢迎！
+            "405":
+                description: invalid HTTP Method
+    """
     params = await request.json()
     url = params.get('url')
     if not url:
-        pass
-    return web.Response(text=url)
+        return web.HTTPForbidden(reason='no url in post json')
+    method = params.get('method', 'get')
+    result = await chromium_manager.get_page_content(url)
+    return web.json_response(result)

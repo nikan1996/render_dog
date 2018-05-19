@@ -9,9 +9,10 @@
 @time: 2018/5/17 下午3:48
 """
 
-
+import requests
 def stringify_dict(_dict):
     """make all dict values to be string type"""
     new_dict = dict((key, str(value)) for key, value in _dict.items())
     print(new_dict)
     return new_dict
+

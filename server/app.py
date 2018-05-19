@@ -12,7 +12,7 @@ import asyncio
 from aiohttp import web
 import uvloop
 from aiohttp_swagger import setup_swagger
-from core.main import init_chromium, browser
+from core.main import chromium_manager
 from server.views.render import raw_get_render, raw_post_render, RenderView
 
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
@@ -69,11 +69,16 @@ def setup_routes(app):
 
     app.router.add_view('/render', RenderView)
 
+def setup_browser():
+    print('setup_browser')
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(chromium_manager.setup())
+    print('end')
 
 def create_app(loop=None):
     app = web.Application(loop=loop)
     setup_routes(app)
-    # init_chromium()
+    setup_browser()
     setup_swagger(app)
     web.run_app(app, host='0.0.0.0', port=9999)
 

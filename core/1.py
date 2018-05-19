@@ -12,7 +12,6 @@ import asyncio
 from asyncio import ensure_future
 
 from pyppeteer import launch
-
 from core.utils import stringify_dict
 
 

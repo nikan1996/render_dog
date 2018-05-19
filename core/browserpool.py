@@ -9,7 +9,7 @@
 @time: 2018/5/17 下午7:32
 """
 
-class BrowserPool():
+class BrowserPool:
     """
     
     """
