@@ -99,10 +99,10 @@ class ChromiumManager:
         status_code = response.status
         await page.close()
         return {
-            'content':content,
-            'title':title,
-            'status_code': response.status,
-            'headers': response.headers
+            'content': content,
+            'title': title,
+            'status_code': headers,
+            'headers': status_code
         }
     
     
