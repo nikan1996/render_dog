@@ -91,6 +91,15 @@ class ChromiumManager:
         browser = self.default_browser if not browser else browser
         page = await browser.newPage()  # type: Page
         page.setDefaultNavigationTimeout(30000*10)
+        page.setRequestInterception(True)  # 打开拦截请求开关
+        page.on('request', request= > {
+        if (request.resourceType() == = 'image')
+        request.abort();
+        else
+        request.
+        continue
+        ();
+        });
         response = await page.goto(url)  # type: Response
         content = await page.content()
         title = await page.title()

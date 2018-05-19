@@ -48,4 +48,5 @@ async def raw_post_render(request):
         return web.HTTPForbidden(reason='no url in post json')
     method = params.get('method', 'get')
     result = await chromium_manager.get_page_content(url)
+    print(result)
     return web.json_response(result)
