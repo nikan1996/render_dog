@@ -45,9 +45,7 @@ async def test_render(test_client):
     text = await resp.text()
     assert 'https://www.baidu.com/' in text
     
-    resp = await client.post('/render', json={
-    
-    })
-    assert resp.status == 200
+    resp = await client.post('/render', json={})
+    assert resp.status == 403
     text = await resp.text()
-    assert 'https://www.baidu.com/' not in text
+    assert text == "403: no url in post json"
